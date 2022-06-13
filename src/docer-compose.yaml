@@ -1,0 +1,16 @@
+version: '1'
+services:
+  db:
+    image: ivyats/database
+    environment:
+      - JDBC=jdbc:mysql://localhost:3306/ACHIVE
+      - USER=root
+      - PASSWORD=1829Qw20
+  server:
+    image: ivyats/server
+    ports:
+      - "8000:8000"
+    environment:
+      - URL=http://127.0.0.1:8000/numberdb
+      - PATH_LAST=/numberdb
+      - PORT=8000

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-server
+  namespace: ivyats
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: k8s-server
+  template:
+    metadata:
+      labels:
+        app: k8s-server
+    spec:
+      containers:
+      - name: k8s-server
+        image: ivyats/webserver
+        resources:
+          limits:
+            memory: "32Mi"
+            cpu: "20m"
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PORT
+          value: 8000
+        - name: PATH_LAST
+          value: /numberdb
+        - name: URL
+          value: http://127.0.0.1:8000/numberdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-server
+  namespace: ivyats
+spec:
+  selector:
+    app: k8s-server
+  ports:
+  - protocol: TCP
+    name: http
+    port: 8080
+    targetPort: 8000

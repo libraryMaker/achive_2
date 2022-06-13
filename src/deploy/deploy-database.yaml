@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-db
+  namespace: ivyats
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-db
+  template:
+    metadata:
+      labels:
+        app: k8s-db
+    spec:
+      containers:
+      - name: k8s-db
+        image: ivyats/database
+        resources:
+          limits:
+            memory: "32Mi"
+            cpu: "20m"
+        ports:
+        - containerPort: 3306
+        env:
+          - name: PASSWORD
+            value: 1829Qw20
+          - name: USER
+            value: root
+          - name: JDBC
+            value: jdbc:mysql://localhost:3306/ACHIVE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-db
+  namespace: ivyats
+spec:
+  selector:
+    app: k8s-db
+  ports:
+  - port: 3306
+    targetPort: 3306
