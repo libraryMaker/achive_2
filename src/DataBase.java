@@ -1,10 +1,14 @@
 import java.sql.*;
+import java.util.Map;
 
 public class DataBase {
 
-    private static final String url = "jdbc:mysql://localhost:3306/ACHIVE";
-    private static final String user = "root";
-    private static final String password = "746Td215";
+    static Map<String, String> env = System.getenv();
+
+
+    private static final String url = env.get("JDBC");
+    private static final String user = env.get("USER");
+    private static final String password = env.get("PASSWORD");
 
     private static Connection con;
 

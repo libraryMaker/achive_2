@@ -19,14 +19,16 @@ import sun.net.www.http.HttpClient;
 
 public class Server {
 
+    static Map<String, String> env = System.getenv();
+
     public static void runServer() throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress( Integer.parseInt(env.get("PORT"))), 0);
         System.out.print(InetAddress.getLoopbackAddress());
-        server.createContext("/numberdb", new MyHandler());
+        server.createContext(env.get("PATH_LAST"), new MyHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
 
-        URL url = new URL("http://127.0.0.1:8000/numberdb");
+        URL url = new URL(env.get("URL"));
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
